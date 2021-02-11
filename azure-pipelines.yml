@@ -32,12 +32,8 @@ steps:
     minorVersion: '$(Minor)'
     patchVersion: '$(Patch)'
 
-- task: NuGetAuthenticate@0
+- task: PublishBuildArtifacts@1
   inputs:
-    nuGetServiceConnections: 'NuGet Feed (Keagan Ladds)'
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'NuGet Feed (Keagan Ladds)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
