@@ -21,10 +21,6 @@ steps:
     command: 'build'
     projects: 'src/**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'test/**/*.csproj'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -36,3 +32,12 @@ steps:
     minorVersion: '$(Minor)'
     patchVersion: '$(Patch)'
 
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: 'NuGet Feed (Keagan Ladds)'
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NuGet Feed (Keagan Ladds)'
