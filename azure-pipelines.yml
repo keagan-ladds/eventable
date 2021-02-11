@@ -9,9 +9,30 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+   major: '0'
+   minor: '0'
+   patch: '0-prerelease'
+
 steps:
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'src/**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'test/**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/**/*.csproj'
+    nobuild: true
+    versioningScheme: byPrereleaseNumber
+    majorVersion: '$(Major)'
+    minorVersion: '$(Minor)'
+    patchVersion: '$(Patch)'
+
